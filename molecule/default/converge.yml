@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include acme.node_exporter_ansible_role"
+      include_role:
+        name: "acme.node_exporter_ansible_role"
