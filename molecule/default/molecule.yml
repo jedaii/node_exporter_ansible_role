@@ -5,7 +5,10 @@ driver:
   name: vagrant
 platforms:
   - name: instance
+    box: bento/ubuntu-20.04
 provisioner:
   name: ansible
 verifier:
   name: testinfra
+  options:
+    verbose: true

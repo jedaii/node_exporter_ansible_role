@@ -1,2 +1,34 @@
 ---
 # tasks file for node_exporter_ansible_role
+- name: Create the node exporter group
+  ansible.builtin.group:
+    name: "{{ node_exporter_group }}"
+    state: present
+  become: true
+
+- name: Create the node exporter user
+  ansible.builtin.user:
+    name: "{{ node_exporter_user }}"
+    state: present
+  become: true
+
+- name: Download node_exporter archive
+  ansible.builtin.get_url:
+    url: https://github.com/prometheus/node_exporter/releases/download/v1.4.0/node_exporter-1.4.0.linux-amd64.tar.gz
+    dest: /tmp/node_exporter-1.4.0.linux-amd64.tar.gz
+
+- name: Unpack node_exporter archive
+  ansible.builtin.unarchive:
+    src: /tmp/node_exporter-1.4.0.linux-amd64.tar.gz
+    dest: /tmp
+    remote_src: yes
+
+- name: Copy node_exporter binaries
+  ansible.builtin.copy:
+    src: /tmp/node_exporter-1.4.0.linux-amd64.tar.gz
+    dest: "{{ node_exporter_binary_dir }}"
+    mode: 0755
+    owner: root
+    group: root
+    remote_src: yes
+  become: true
